@@ -20,7 +20,8 @@ async function loadWorldData() {
   loading.value = true
   error.value = null
 
-  const {  worldData, error: worldErr } = await supabase
+  // Исправлено: деструктуризация возвращаемого значения
+  const { data: worldData, error: worldErr } = await supabase
     .from('worlds')
     .select('name')
     .eq('id', worldId)
@@ -54,7 +55,8 @@ async function createArticle() {
   creating.value = true
   error.value = null
 
-  const {  { user }, error: authError } = await supabase.auth.getUser()
+  // Исправлено: деструктуризация возвращаемого значения
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (authError || !user) {
     error.value = 'You must be logged in.'
     creating.value = false
@@ -136,9 +138,10 @@ onMounted(() => {
         class="p-4 border border-gray-200 rounded-lg bg-white"
       >
         <h3 class="text-xl font-semibold">{{ article.title }}</h3>
+        <!-- Исправлено: для отображения markdown-контента нужно использовать библиотеку -->
         <div
           class="text-gray-700 mt-2 prose prose-sm max-w-none"
-          v-html="$options.filters?.markdownToHtml(article.content) || article.content"
+          v-html="article.rendered_content || article.content" 
         ></div>
         <p class="text-xs text-gray-400 mt-2">
           Created {{ new Date(article.created_at).toLocaleDateString() }}
