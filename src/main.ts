@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import { router } from './router'
 import "./assets/main.css";
-import './style.css'
+//import './style.css'
 
 // Импорт Supabase для инициализации сессии
 import { supabase } from './lib/supabase'
